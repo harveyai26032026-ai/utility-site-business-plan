@@ -1,78 +1,188 @@
-// Concrete Volume Calculator — 100% client-side.
-// Computes volume in cubic feet/metres -> cubic yards & metres, plus bag count.
+// Concrete Calculator — 100% client-side. No unit mixing.
 const $ = (id) => document.getElementById(id);
+const num = (id) => { const v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; };
 
-function num(id){ const v = parseFloat($(id).value); return isFinite(v) && v > 0 ? v : 0; }
+// ---- unit definitions (factor = metres per unit) ----
+const UNITS = {
+  metric:   [["mm",0.001],["cm",0.01],["m",1]],
+  imperial: [["in",0.0254],["yd",0.9144]]
+};
+// for thickness/depth defaults we prefer the smaller unit
+const DEFAULT_DIM = { metric:"m", imperial:"yd" };
+const DEFAULT_DEPTH = { metric:"mm", imperial:"in" };
+
+const BAGS = {
+  // value = yield in m^3 per bag; label shown to user
+  metric:   [["20",0.010,"20 kg (~0.010 m³)"],["30",0.015,"30 kg (~0.015 m³)"],["40",0.020,"40 kg (~0.020 m³)"]],
+  imperial: [["80",0.017,"80 lb (0.60 ft³)"],["60",0.0127,"60 lb (0.45 ft³)"],["40",0.0085,"40 lb (0.30 ft³)"]]
+};
+const DEFAULT_BAG = { metric:"20", imperial:"80" };
+
+// mix ratios cement:sand:aggregate (by volume) + water/cement ratio
+const MIX = {
+  "20": {r:[1,2.5,3.5], wc:0.60},
+  "25": {r:[1,2,3],     wc:0.55},
+  "32": {r:[1,1.5,3],   wc:0.50},
+  "40": {r:[1,1.2,2.4], wc:0.45}
+};
+const DRY_FACTOR = 1.54;       // wet -> dry materials bulking
+const CEMENT_DENSITY = 1440;   // kg/m^3 loose cement
+
+const M3_TO_FT3 = 35.3146667;
+
+function fillSelect(sel, opts, def){
+  sel.innerHTML = opts.map(o => `<option value="${o[0]}">${o[0]}</option>`).join("");
+  sel.value = def;
+}
+function fillBag(){
+  const sys = $("system").value;
+  $("bag").innerHTML = BAGS[sys].map(b => `<option value="${b[1]}">${b[2]}</option>`).join("");
+  $("bag").value = BAGS[sys][0][1];
+}
+
+function populateUnits(){
+  const sys = $("system").value;
+  const dimOpts = UNITS[sys];
+  // dimension selectors (length, width, diameter, height) default to large unit
+  ["lengthU","widthU","diameterU","heightU"].forEach(id => fillSelect($(id), dimOpts, DEFAULT_DIM[sys]));
+  // thickness + depth selectors default to small unit
+  fillSelect($("thicknessU"), dimOpts, DEFAULT_DEPTH[sys]);
+  document.querySelectorAll(".depthsel").forEach(s => fillSelect(s, dimOpts, DEFAULT_DEPTH[sys]));
+  fillBag();
+}
+
+// value in metres from input id + its unit selector id
+function metres(valId, unitId){
+  const v = num(valId);
+  const u = $(unitId).value;
+  const def = UNITS[$("system").value].find(x => x[0] === u);
+  return v * (def ? def[1] : 0);
+}
+
+function fmt(x, d){ return x.toLocaleString(undefined, {minimumFractionDigits:d, maximumFractionDigits:d}); }
 
 function compute(){
+  const sys = $("system").value;
+  const metric = sys === "metric";
   const shape = $("shape").value;
-  const metric = $("units").value === "metric";
   const qty = Math.max(1, Math.floor(num("qty")) || 1);
-  const waste = 1 + (parseFloat($("waste").value) / 100);
-  const bagFt3 = parseFloat($("bag").value); // ft^3 yield per bag
+  const waste = 1 + (parseFloat($("waste").value)/100);
+  const bagYield = parseFloat($("bag").value); // m^3 per bag
 
-  let volFt3 = 0; // total volume in cubic feet (single unit)
+  let volM3 = 0;        // single-item wet volume in m^3
+  let planAreaM2 = 0;   // plan area (slab) for graded + saw
+  let thickM = 0;
 
   if (shape === "slab"){
-    let L = num("length"), W = num("width"), T = num("thickness");
-    if (metric){
-      // L,W in metres; T in cm
-      const m3 = L * W * (T / 100);
-      volFt3 = m3 * 35.3146667;
+    const L = metres("length","lengthU");
+    const W = metres("width","widthU");
+    planAreaM2 = L * W;
+    if ($("useGrade").checked){
+      // average corner depth method
+      const depths = ["ca","cb","cc","cd"].map((id,i)=>metres(id, id+"U"));
+      const avg = depths.reduce((a,b)=>a+b,0)/4;
+      thickM = avg;
+      volM3 = planAreaM2 * avg;
+      $("gradeNote").textContent =
+        `Average depth = ${metric ? fmt(avg,3)+" m" : fmt(avg/0.3048,3)+" ft"} ` +
+        `(corners ${depths.map(d=>metric?fmt(d,3):fmt(d/0.3048,3)).join(", ")} ${metric?"m":"ft"}).`;
     } else {
-      // L,W in feet; T in inches
-      volFt3 = L * W * (T / 12);
+      thickM = metres("thickness","thicknessU");
+      volM3 = planAreaM2 * thickM;
     }
   } else {
-    let D = num("diameter"), H = num("height");
-    if (metric){
-      // D in cm, H in metres
-      const r = (D / 100) / 2;
-      const m3 = Math.PI * r * r * H;
-      volFt3 = m3 * 35.3146667;
-    } else {
-      // D in inches, H in feet
-      const r = (D / 12) / 2;
-      volFt3 = Math.PI * r * r * H;
-    }
+    const D = metres("diameter","diameterU");
+    const H = metres("height","heightU");
+    const r = D/2;
+    volM3 = Math.PI * r * r * H;
+    thickM = H;
   }
 
-  volFt3 = volFt3 * qty * waste;
+  const totalM3 = volM3 * qty * waste;
+  const ft3 = totalM3 * M3_TO_FT3;
+  const bags = bagYield > 0 ? Math.ceil(totalM3 / bagYield) : 0;
 
-  const yd3 = volFt3 / 27;
-  const m3 = volFt3 / 35.3146667;
-  const bags = bagFt3 > 0 ? Math.ceil(volFt3 / bagFt3) : 0;
+  // ---- primary results (single volume unit per system) ----
+  if (totalM3 > 0){
+    const volCard = metric
+      ? `<div class="stat"><span class="big">${fmt(totalM3,3)}</span><span class="lbl">cubic metres (m³)</span></div>`
+      : `<div class="stat"><span class="big">${fmt(ft3,2)}</span><span class="lbl">cubic feet (ft³)</span></div>`;
+    $("results").innerHTML = volCard +
+      `<div class="stat"><span class="big">${bags}</span><span class="lbl">bags needed</span></div>` +
+      `<div class="stat"><span class="big">${qty}</span><span class="lbl">× quantity</span></div>`;
+  } else {
+    $("results").innerHTML = `<div class="stat" style="grid-column:1/-1"><span class="lbl">Enter dimensions to see your estimate.</span></div>`;
+  }
 
-  const fmt = (x, d) => x.toLocaleString(undefined, {minimumFractionDigits:d, maximumFractionDigits:d});
-
-  $("results").innerHTML = volFt3 > 0 ? `
-    <div class="stat"><span class="big">${fmt(yd3,2)}</span><span class="lbl">cubic yards</span></div>
-    <div class="stat"><span class="big">${fmt(m3,2)}</span><span class="lbl">cubic metres</span></div>
-    <div class="stat"><span class="big">${fmt(volFt3,1)}</span><span class="lbl">cubic feet</span></div>
-    <div class="stat"><span class="big">${bags}</span><span class="lbl">bags needed</span></div>
-  ` : `<div class="stat" style="grid-column:1/-1"><span class="lbl">Enter dimensions above to see your estimate.</span></div>`;
+  computeMix(totalM3, metric);
+  computeSaw(thickM, metric);
 }
 
-function syncUnits(){
-  const metric = $("units").value === "metric";
-  document.querySelectorAll(".u").forEach(el => {
-    const u = el.getAttribute("data-u");
-    if (metric) el.textContent = (u === "ft") ? "m" : "cm";
-    else el.textContent = u;
-  });
+function computeMix(totalM3, metric){
+  if (!$("useMix").checked || totalM3 <= 0){ $("mixResults").innerHTML=""; $("mixWc").textContent=""; return; }
+  const m = MIX[$("strength").value];
+  const sum = m.r[0]+m.r[1]+m.r[2];
+  const dry = totalM3 * DRY_FACTOR;
+  const cementM3 = dry * (m.r[0]/sum);
+  const sandM3   = dry * (m.r[1]/sum);
+  const aggM3    = dry * (m.r[2]/sum);
+  const cementKg = cementM3 * CEMENT_DENSITY;
+  const bagW = parseFloat($("cementBag").value);
+  const cementBags = Math.ceil(cementKg / bagW);
+  const waterL = cementKg * m.wc;
+
+  const sand = metric ? `${fmt(sandM3,3)} m³` : `${fmt(sandM3*M3_TO_FT3,2)} ft³`;
+  const agg  = metric ? `${fmt(aggM3,3)} m³`  : `${fmt(aggM3*M3_TO_FT3,2)} ft³`;
+
+  $("mixResults").innerHTML =
+    `<div class="stat"><span class="big">${cementBags}</span><span class="lbl">cement bags (${bagW} kg)</span></div>` +
+    `<div class="stat"><span class="big">${sand}</span><span class="lbl">sand (bulk)</span></div>` +
+    `<div class="stat"><span class="big">${agg}</span><span class="lbl">aggregate (bulk)</span></div>` +
+    `<div class="stat"><span class="big">${fmt(waterL,0)} L</span><span class="lbl">water (approx)</span></div>`;
+  $("mixWc").textContent =
+    `Ratio ${m.r.join(":")} (cement:sand:aggregate), water-cement ratio ${m.wc}. ` +
+    `≈${fmt(cementKg,0)} kg cement. Dry-material bulking factor ${DRY_FACTOR} applied.`;
 }
 
+function computeSaw(thickM, metric){
+  if (!$("useSaw").checked || thickM <= 0){ $("sawResults").innerHTML=""; return; }
+  const cutDepthM = thickM/4;
+  const spaceMin = thickM*24, spaceMax = thickM*36;
+  const dep = metric ? `${fmt(cutDepthM*1000,0)} mm` : `${fmt(cutDepthM/0.0254,2)} in`;
+  const smin = metric ? `${fmt(spaceMin,2)} m` : `${fmt(spaceMin/0.3048,1)} ft`;
+  const smax = metric ? `${fmt(spaceMax,2)} m` : `${fmt(spaceMax/0.3048,1)} ft`;
+  $("sawResults").innerHTML =
+    `<div class="stat"><span class="big">${dep}</span><span class="lbl">cut depth (≈¼ slab)</span></div>` +
+    `<div class="stat"><span class="big">${smin}–${smax}</span><span class="lbl">joint spacing</span></div>`;
+}
+
+// ---- wiring ----
 function syncShape(){
   const slab = $("shape").value === "slab";
   $("slabInputs").hidden = !slab;
   $("columnInputs").hidden = slab;
+  // graded land only applies to slabs
+  $("useGrade").disabled = !slab;
+  if (!slab){ $("useGrade").checked = false; $("gradeBody").hidden = true; }
+  $("thicknessField").style.opacity = ($("useGrade").checked ? .45 : 1);
   compute();
 }
+function syncSystem(){ populateUnits(); compute(); }
 
-["shape"].forEach(id => $(id).addEventListener("change", syncShape));
-$("units").addEventListener("change", () => { syncUnits(); compute(); });
-["length","width","thickness","diameter","height","qty","waste","bag"].forEach(id =>
-  $(id).addEventListener("input", compute));
+$("system").addEventListener("change", syncSystem);
+$("shape").addEventListener("change", syncShape);
+$("advToggle").addEventListener("click", () => {
+  const a = $("advanced"); const open = a.hidden;
+  a.hidden = !open; $("advToggle").setAttribute("aria-expanded", String(open));
+  $("advToggle").textContent = open ? "⚙️ Advanced options ▴" : "⚙️ Advanced options ▾";
+});
+$("useGrade").addEventListener("change", () => { $("gradeBody").hidden = !$("useGrade").checked; $("thicknessField").style.opacity = ($("useGrade").checked?.45:1); compute(); });
+$("useMix").addEventListener("change", () => { $("mixBody").hidden = !$("useMix").checked; compute(); });
+$("useSaw").addEventListener("change", () => { $("sawBody").hidden = !$("useSaw").checked; compute(); });
 
-syncUnits();
-syncShape();   // also runs compute()
+["length","width","thickness","diameter","height","qty","ca","cb","cc","cd"].forEach(id => $(id).addEventListener("input", compute));
+["lengthU","widthU","thicknessU","diameterU","heightU","waste","bag","strength","cementBag","caU","cbU","ccU","cdU"].forEach(id => $(id).addEventListener("change", compute));
+
+// init
+populateUnits();
+syncShape();

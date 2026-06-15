@@ -3,56 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Concrete Calculator — Estimate Cubic Yards &amp; Bags Instantly</title>
-<meta name="description" content="Free concrete calculator. Instantly estimate the cubic yards, cubic metres and number of bags of concrete you need for slabs, footings, columns and tubes. Fast, mobile-friendly, no sign-up.">
-<link rel="canonical" href="https://harveyai26032026-ai.github.io/concrete-volume-calculator/">
+<title>Concrete Calculator — Volume, Bags, Mix Ratio &amp; Saw Cuts</title>
+<meta name="description" content="Free advanced concrete calculator. Estimate volume (cubic metres or cubic feet), bags, cement/sand/aggregate by mix strength (20–40 MPa), water ratio, saw-cut spacing and concrete volume on graded/uneven land.">
+<link rel="canonical" href="https://harveyai26032026-ai.github.io/utility-site-business-plan/sites/concrete-volume-calculator/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Concrete Calculator — Cubic Yards & Bags">
-<meta property="og:description" content="Estimate concrete volume and bags for slabs, footings, columns and tubes. Free and instant.">
-<meta property="og:url" content="https://harveyai26032026-ai.github.io/concrete-volume-calculator/">
-<meta property="og:image" content="https://harveyai26032026-ai.github.io/concrete-volume-calculator/og.png">
+<meta property="og:title" content="Concrete Calculator — Volume, Bags, Mix & Saw Cuts">
+<meta property="og:description" content="Estimate concrete volume, bags, mix ratios by strength, saw cuts and volume on graded land. Free and instant.">
+<meta property="og:url" content="https://harveyai26032026-ai.github.io/utility-site-business-plan/sites/concrete-volume-calculator/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Concrete Calculator — Cubic Yards & Bags">
-<meta name="twitter:description" content="Estimate concrete volume and bags for slabs, footings, columns and tubes. Free and instant.">
 
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Concrete Volume Calculator",
-  "url": "https://harveyai26032026-ai.github.io/concrete-volume-calculator/",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "All",
-  "description": "Estimate concrete volume in cubic yards and metres, plus the number of bags needed, for slabs, footings, columns and tubes.",
+  "@context": "https://schema.org","@type": "WebApplication",
+  "name": "Concrete Calculator",
+  "applicationCategory": "UtilitiesApplication","operatingSystem": "All",
+  "description": "Estimate concrete volume, bags, mix ratios by strength, saw-cut spacing and volume on graded land.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
-
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
+  "@context": "https://schema.org","@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do I calculate how much concrete I need?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Multiply the length × width × thickness of your pour to get the volume, then convert to cubic yards (divide cubic feet by 27) or cubic metres. This calculator does it automatically for slabs, footings, round columns and tubes, and also tells you how many pre-mixed bags to buy." }
-    },
-    {
-      "@type": "Question",
-      "name": "How many 80 lb bags of concrete are in a cubic yard?",
-      "acceptedAnswer": { "@type": "Answer", "text": "An 80 lb (36 kg) bag of pre-mixed concrete yields about 0.6 cubic feet, so it takes roughly 45 bags to fill one cubic yard (27 cubic feet). A 60 lb bag yields about 0.45 cubic feet, needing about 60 bags per cubic yard." }
-    },
-    {
-      "@type": "Question",
-      "name": "Should I order extra concrete?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Order 5–10% extra to allow for spillage, uneven sub-base and over-excavation. This calculator includes an optional waste-allowance setting so your estimate already accounts for it." }
-    }
+    {"@type":"Question","name":"How do I calculate concrete volume on uneven ground?","acceptedAnswer":{"@type":"Answer","text":"Measure the depth from your finished slab level down to natural ground at each corner. Average the corner depths and multiply by the slab's plan area. This calculator's graded-land option does this automatically from four corner depths."}},
+    {"@type":"Question","name":"What cement, sand and aggregate ratio should I use?","acceptedAnswer":{"@type":"Answer","text":"For general 20 MPa concrete use roughly 1:2.5:3.5 (cement:sand:aggregate). For structural 32 MPa use about 1:1.5:3, and for high-strength 40 MPa about 1:1.2:2.4. Lower water-cement ratios give higher strength."}},
+    {"@type":"Question","name":"How deep and how far apart should saw cuts be?","acceptedAnswer":{"@type":"Answer","text":"Cut to about one quarter of the slab thickness (D/4). Space joints roughly 24–36 times the slab thickness — for a 100 mm slab that is about 2.4–3.6 m, and for a 4 inch slab about 8–12 feet."}}
   ]
 }
 </script>
-
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -62,80 +41,154 @@
 </header>
 
 <main>
-  <h1>Concrete Volume Calculator</h1>
-  <p class="lede">Estimate exactly how much concrete you need — in cubic yards, cubic metres, and number of bags — for slabs, footings, round columns and tubes. Free, instant, and works on any device.</p>
+  <h1>Concrete Calculator</h1>
+  <p class="lede">Estimate concrete volume, the number of bags, cement/sand/aggregate quantities by mix strength, saw-cut spacing, and concrete needed on graded or uneven land. Pick a unit system and the whole tool stays in those units — no mixing.</p>
 
   <section class="tool" aria-label="Concrete calculator">
-    <div class="field">
-      <label for="shape">Shape</label>
-      <select id="shape">
-        <option value="slab">Slab / Footing (rectangular)</option>
-        <option value="column">Column / Tube (round)</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label for="units">Units</label>
-      <select id="units">
-        <option value="imperial">Imperial (feet / inches)</option>
-        <option value="metric">Metric (metres / cm)</option>
-      </select>
-    </div>
-
-    <div id="slabInputs">
-      <div class="grid">
-        <div class="field"><label>Length <span class="u" data-u="ft">ft</span></label><input id="length" type="number" min="0" step="any" value="10"></div>
-        <div class="field"><label>Width <span class="u" data-u="ft">ft</span></label><input id="width" type="number" min="0" step="any" value="10"></div>
-        <div class="field"><label>Thickness <span class="u" data-u="in">in</span></label><input id="thickness" type="number" min="0" step="any" value="4"></div>
+    <div class="grid">
+      <div class="field">
+        <label for="system">Unit system</label>
+        <select id="system">
+          <option value="metric">Metric (mm / cm / m)</option>
+          <option value="imperial">Imperial (inches / yards)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="shape">Shape</label>
+        <select id="shape">
+          <option value="slab">Slab / Footing (rectangular)</option>
+          <option value="column">Column / Tube (round)</option>
+        </select>
       </div>
     </div>
 
+    <!-- SLAB -->
+    <div id="slabInputs">
+      <div class="grid">
+        <div class="field"><label>Length</label>
+          <div class="combo"><input id="length" type="number" min="0" step="any" value="5"><select id="lengthU" class="unitsel"></select></div></div>
+        <div class="field"><label>Width</label>
+          <div class="combo"><input id="width" type="number" min="0" step="any" value="3"><select id="widthU" class="unitsel"></select></div></div>
+        <div class="field" id="thicknessField"><label>Thickness</label>
+          <div class="combo"><input id="thickness" type="number" min="0" step="any" value="100"><select id="thicknessU" class="unitsel"></select></div></div>
+      </div>
+    </div>
+
+    <!-- COLUMN -->
     <div id="columnInputs" hidden>
       <div class="grid">
-        <div class="field"><label>Diameter <span class="u" data-u="in">in</span></label><input id="diameter" type="number" min="0" step="any" value="12"></div>
-        <div class="field"><label>Height <span class="u" data-u="ft">ft</span></label><input id="height" type="number" min="0" step="any" value="4"></div>
+        <div class="field"><label>Diameter</label>
+          <div class="combo"><input id="diameter" type="number" min="0" step="any" value="300"><select id="diameterU" class="unitsel"></select></div></div>
+        <div class="field"><label>Height</label>
+          <div class="combo"><input id="height" type="number" min="0" step="any" value="1"><select id="heightU" class="unitsel"></select></div></div>
       </div>
     </div>
 
     <div class="grid">
       <div class="field"><label>Quantity</label><input id="qty" type="number" min="1" step="1" value="1"></div>
       <div class="field"><label>Waste allowance</label>
-        <select id="waste">
-          <option value="0">0%</option>
-          <option value="5" selected>5%</option>
-          <option value="10">10%</option>
-        </select>
+        <select id="waste"><option value="0">0%</option><option value="5" selected>5%</option><option value="10">10%</option></select>
       </div>
-      <div class="field"><label>Bag size</label>
-        <select id="bag">
-          <option value="0.60">80 lb (0.60 ft³)</option>
-          <option value="0.45">60 lb (0.45 ft³)</option>
-          <option value="0.30">40 lb (0.30 ft³)</option>
-        </select>
-      </div>
+      <div class="field"><label>Bag size</label><select id="bag"></select></div>
     </div>
 
     <div class="results" id="results" aria-live="polite"></div>
+
+    <button id="advToggle" type="button" class="adv-toggle" aria-expanded="false">⚙️ Advanced options ▾</button>
+
+    <div id="advanced" class="advanced" hidden>
+
+      <!-- GRADED LAND -->
+      <div class="adv-block">
+        <label class="adv-head"><input type="checkbox" id="useGrade"> Graded / uneven land (rectangular slab)</label>
+        <p class="hint">Enter the depth from finished slab level down to natural ground at each corner. The slab top is assumed flat and level; volume uses the average corner depth × plan area.</p>
+        <div id="gradeBody" hidden>
+          <div class="grade-wrap">
+            <svg id="gradeSvg" viewBox="0 0 320 220" width="100%" role="img" aria-label="Square slab with four corner depth points">
+              <!-- flat finished slab top -->
+              <polygon points="60,55 260,55 290,95 90,95" fill="#e9edf5" stroke="#9aa3c7"/>
+              <text x="175" y="78" text-anchor="middle" font-size="11" fill="#5b647a">Finished slab (flat &amp; level)</text>
+              <!-- corner drop lines -->
+              <line x1="90" y1="95" x2="90" y2="175" stroke="#d9531e" stroke-dasharray="4 3"/>
+              <line x1="290" y1="95" x2="290" y2="150" stroke="#d9531e" stroke-dasharray="4 3"/>
+              <line x1="60" y1="55" x2="60" y2="120" stroke="#d9531e" stroke-dasharray="4 3"/>
+              <line x1="260" y1="55" x2="260" y2="110" stroke="#d9531e" stroke-dasharray="4 3"/>
+              <!-- natural ground (uneven) -->
+              <polygon points="60,120 260,110 290,150 90,175" fill="#f3e6d8" stroke="#caa07a"/>
+              <text x="185" y="200" text-anchor="middle" font-size="11" fill="#8a6a4a">Natural ground (uneven)</text>
+              <!-- corner labels -->
+              <circle cx="60" cy="55" r="4" fill="#d9531e"/><text x="46" y="50" font-size="11" fill="#d9531e">A</text>
+              <circle cx="260" cy="55" r="4" fill="#d9531e"/><text x="266" y="50" font-size="11" fill="#d9531e">B</text>
+              <circle cx="290" cy="95" r="4" fill="#d9531e"/><text x="297" y="98" font-size="11" fill="#d9531e">C</text>
+              <circle cx="90" cy="95" r="4" fill="#d9531e"/><text x="74" y="110" font-size="11" fill="#d9531e">D</text>
+            </svg>
+          </div>
+          <div class="grid">
+            <div class="field"><label>Corner A depth</label><div class="combo"><input id="ca" type="number" min="0" step="any" value="100"><select id="caU" class="unitsel depthsel"></select></div></div>
+            <div class="field"><label>Corner B depth</label><div class="combo"><input id="cb" type="number" min="0" step="any" value="150"><select id="cbU" class="unitsel depthsel"></select></div></div>
+            <div class="field"><label>Corner C depth</label><div class="combo"><input id="cc" type="number" min="0" step="any" value="200"><select id="ccU" class="unitsel depthsel"></select></div></div>
+            <div class="field"><label>Corner D depth</label><div class="combo"><input id="cd" type="number" min="0" step="any" value="120"><select id="cdU" class="unitsel depthsel"></select></div></div>
+          </div>
+          <p class="hint" id="gradeNote"></p>
+        </div>
+      </div>
+
+      <!-- MIX DESIGN -->
+      <div class="adv-block">
+        <label class="adv-head"><input type="checkbox" id="useMix"> Mix design — cement, sand &amp; aggregate</label>
+        <div id="mixBody" hidden>
+          <div class="grid">
+            <div class="field"><label>Concrete strength</label>
+              <select id="strength">
+                <option value="20">20 MPa — general / footings (1:2.5:3.5)</option>
+                <option value="25">25 MPa — paths / driveways (1:2:3)</option>
+                <option value="32" selected>32 MPa — structural slab (1:1.5:3)</option>
+                <option value="40">40 MPa — high strength (1:1.2:2.4)</option>
+              </select>
+            </div>
+            <div class="field"><label>Cement bag weight</label>
+              <select id="cementBag">
+                <option value="20">20 kg</option>
+                <option value="30">30 kg</option>
+                <option value="40">40 kg</option>
+              </select>
+            </div>
+          </div>
+          <div class="results" id="mixResults" aria-live="polite"></div>
+          <p class="hint" id="mixWc"></p>
+        </div>
+      </div>
+
+      <!-- SAW CUTS -->
+      <div class="adv-block">
+        <label class="adv-head"><input type="checkbox" id="useSaw"> Saw-cut (control joint) guidance</label>
+        <div id="sawBody" hidden>
+          <div class="results" id="sawResults" aria-live="polite"></div>
+          <p class="hint">Rule of thumb: cut depth ≈ ¼ of slab thickness; joint spacing ≈ 24–36× thickness. Cut early (within 6–18 hours). Higher-strength, low-shrinkage mixes tolerate the wider end of the spacing range.</p>
+        </div>
+      </div>
+
+    </div>
   </section>
 
   <section id="how">
     <h2>What this tool does</h2>
-    <p>This <strong>concrete calculator</strong> tells you how much concrete to order for your project. Enter the dimensions of a rectangular slab or footing, or the diameter and height of a round column or tube, and it instantly returns the volume in <strong>cubic yards and cubic metres</strong>, plus the <strong>number of pre-mixed bags</strong> required at your chosen bag size. It also adds an optional waste allowance so your estimate accounts for spillage and uneven ground. All calculations run locally in your browser — there's nothing to install and no sign-up required.</p>
+    <p>This <strong>concrete calculator</strong> estimates how much concrete you need and helps you order and place it correctly. Choose metric or imperial and every field stays in that system. Volume is reported in <strong>cubic metres</strong> (metric) or <strong>cubic feet</strong> (imperial), with bag counts for your chosen bag weight. The advanced options add a <strong>mix-design estimate</strong> (cement bags plus bulk sand and aggregate by concrete strength and water-cement ratio), <strong>saw-cut spacing and depth guidance</strong>, and a <strong>graded-land mode</strong> that works out concrete volume over uneven ground from four corner depths. Everything runs locally in your browser — nothing is installed or uploaded.</p>
   </section>
 
   <section id="faq">
     <h2>Frequently asked questions</h2>
-    <h3>How do I calculate how much concrete I need?</h3>
-    <p>Multiply length × width × thickness to get the volume, then convert to cubic yards (cubic feet ÷ 27) or cubic metres. This tool does it automatically for slabs, footings, columns and tubes, and tells you how many bags to buy.</p>
-    <h3>How many 80 lb bags of concrete are in a cubic yard?</h3>
-    <p>An 80 lb bag yields about 0.6 ft³, so roughly 45 bags fill one cubic yard (27 ft³). A 60 lb bag yields about 0.45 ft³, needing about 60 bags per cubic yard.</p>
-    <h3>Should I order extra concrete?</h3>
-    <p>Yes — order 5–10% extra for spillage and uneven sub-base. Use the waste-allowance setting above so your estimate already includes it.</p>
+    <h3>How do I calculate concrete volume on uneven ground?</h3>
+    <p>Measure the depth from finished slab level to natural ground at each corner, average those depths, and multiply by the plan area. The graded-land option does this for you.</p>
+    <h3>What cement, sand and aggregate ratio should I use?</h3>
+    <p>≈1:2.5:3.5 for 20 MPa general concrete, ≈1:1.5:3 for 32 MPa structural, ≈1:1.2:2.4 for 40 MPa. Lower water-cement ratios mean higher strength.</p>
+    <h3>How deep and how far apart should saw cuts be?</h3>
+    <p>Cut to about ¼ of slab thickness and space joints roughly 24–36× the thickness (≈2.4–3.6 m for a 100 mm slab; ≈8–12 ft for a 4″ slab).</p>
   </section>
 </main>
 
 <footer>
-  <p>Free &amp; instant concrete estimator. Estimates only — confirm quantities with your supplier before ordering.</p>
+  <p>Free concrete estimator. Mix ratios and joint spacing are industry rules of thumb — confirm structural requirements with your engineer or supplier.</p>
 </footer>
 
 <!-- ADSENSE_PLACEHOLDER -->
