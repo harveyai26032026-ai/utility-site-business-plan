@@ -42,7 +42,7 @@
 
 <main>
   <h1>Concrete Calculator</h1>
-  <p class="lede">Estimate concrete volume, the number of bags, cement/sand/aggregate quantities by mix strength, saw-cut spacing, and concrete needed on graded or uneven land. Pick a unit system and the whole tool stays in those units — no mixing.</p>
+  <p class="lede">Estimate concrete volume, the number of bags, cement/sand/aggregate quantities by mix strength, saw-cut spacing, and concrete needed on graded or uneven land.</p>
 
   <section class="tool" aria-label="Concrete calculator">
     <div class="grid">
@@ -98,6 +98,37 @@
 
     <div id="advanced" class="advanced" hidden>
 
+      <!-- SUBTRACT VOLUME -->
+      <div class="adv-block">
+        <label class="adv-head"><input type="checkbox" id="useSub"> Subtract a volume (footing, pit, void)</label>
+        <div id="subBody" hidden>
+          <p class="hint">Subtract the volume of a footing, pit, recess or void from the total — useful when a slab has a cut-out. Uses the same unit system as above.</p>
+          <div class="grid">
+            <div class="field"><label>Cut-out shape</label>
+              <select id="subShape">
+                <option value="box">Rectangular (L × W × D)</option>
+                <option value="round">Round (diameter × depth)</option>
+              </select>
+            </div>
+            <div class="field"><label>How many?</label><input id="subQty" type="number" min="1" step="1" value="1"></div>
+          </div>
+          <div id="subBox">
+            <div class="grid">
+              <div class="field"><label>Length</label><div class="combo"><input id="subL" type="number" min="0" step="any" value="0"><select id="subLU" class="unitsel"></select></div></div>
+              <div class="field"><label>Width</label><div class="combo"><input id="subW" type="number" min="0" step="any" value="0"><select id="subWU" class="unitsel"></select></div></div>
+              <div class="field"><label>Depth</label><div class="combo"><input id="subD" type="number" min="0" step="any" value="0"><select id="subDU" class="unitsel depthsel"></select></div></div>
+            </div>
+          </div>
+          <div id="subRound" hidden>
+            <div class="grid">
+              <div class="field"><label>Diameter</label><div class="combo"><input id="subDia" type="number" min="0" step="any" value="0"><select id="subDiaU" class="unitsel depthsel"></select></div></div>
+              <div class="field"><label>Depth</label><div class="combo"><input id="subDep" type="number" min="0" step="any" value="0"><select id="subDepU" class="unitsel depthsel"></select></div></div>
+            </div>
+          </div>
+          <p class="hint" id="subNote"></p>
+        </div>
+      </div>
+
       <!-- GRADED LAND -->
       <div class="adv-block">
         <label class="adv-head"><input type="checkbox" id="useGrade"> Graded / uneven land (rectangular slab)</label>
@@ -135,7 +166,7 @@
 
       <!-- MIX DESIGN -->
       <div class="adv-block">
-        <label class="adv-head"><input type="checkbox" id="useMix"> Mix design — cement, sand &amp; aggregate</label>
+        <label class="adv-head"><input type="checkbox" id="useMix"> Cement bag and bulk aggregate and sand mix</label>
         <div id="mixBody" hidden>
           <div class="grid">
             <div class="field"><label>Concrete strength</label>

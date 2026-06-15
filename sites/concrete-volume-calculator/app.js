@@ -44,7 +44,7 @@ function populateUnits(){
   const sys = $("system").value;
   const dimOpts = UNITS[sys];
   // dimension selectors (length, width, diameter, height) default to large unit
-  ["lengthU","widthU","diameterU","heightU"].forEach(id => fillSelect($(id), dimOpts, DEFAULT_DIM[sys]));
+  ["lengthU","widthU","diameterU","heightU","subLU","subWU"].forEach(id => fillSelect($(id), dimOpts, DEFAULT_DIM[sys]));
   // thickness + depth selectors default to small unit
   fillSelect($("thicknessU"), dimOpts, DEFAULT_DEPTH[sys]);
   document.querySelectorAll(".depthsel").forEach(s => fillSelect(s, dimOpts, DEFAULT_DEPTH[sys]));
@@ -98,7 +98,9 @@ function compute(){
     thickM = H;
   }
 
-  const totalM3 = volM3 * qty * waste;
+  const grossM3 = volM3 * qty * waste;
+  const subM3 = computeSubtract();   // volume to remove (already in m³, qty applied)
+  const totalM3 = Math.max(0, grossM3 - subM3);
   const ft3 = totalM3 * M3_TO_FT3;
   const bags = bagYield > 0 ? Math.ceil(totalM3 / bagYield) : 0;
 
@@ -107,9 +109,14 @@ function compute(){
     const volCard = metric
       ? `<div class="stat"><span class="big">${fmt(totalM3,3)}</span><span class="lbl">cubic metres (m³)</span></div>`
       : `<div class="stat"><span class="big">${fmt(ft3,2)}</span><span class="lbl">cubic feet (ft³)</span></div>`;
-    $("results").innerHTML = volCard +
+    let cards = volCard +
       `<div class="stat"><span class="big">${bags}</span><span class="lbl">bags needed</span></div>` +
       `<div class="stat"><span class="big">${qty}</span><span class="lbl">× quantity</span></div>`;
+    if (subM3 > 0){
+      const subDisp = metric ? `−${fmt(subM3,3)} m³` : `−${fmt(subM3*M3_TO_FT3,2)} ft³`;
+      cards += `<div class="stat"><span class="big">${subDisp}</span><span class="lbl">subtracted</span></div>`;
+    }
+    $("results").innerHTML = cards;
   } else {
     $("results").innerHTML = `<div class="stat" style="grid-column:1/-1"><span class="lbl">Enter dimensions to see your estimate.</span></div>`;
   }
@@ -156,6 +163,25 @@ function computeSaw(thickM, metric){
     `<div class="stat"><span class="big">${smin}–${smax}</span><span class="lbl">joint spacing</span></div>`;
 }
 
+function computeSubtract(){
+  if (!$("useSub").checked) { $("subNote").textContent=""; return 0; }
+  const metric = $("system").value === "metric";
+  const q = Math.max(1, Math.floor(num("subQty")) || 1);
+  let one = 0;
+  if ($("subShape").value === "box"){
+    one = metres("subL","subLU") * metres("subW","subWU") * metres("subD","subDU");
+  } else {
+    const r = metres("subDia","subDiaU")/2;
+    one = Math.PI * r * r * metres("subDep","subDepU");
+  }
+  const tot = one * q;
+  if (tot > 0){
+    const disp = metric ? `${fmt(tot,3)} m³` : `${fmt(tot*M3_TO_FT3,2)} ft³`;
+    $("subNote").textContent = `Subtracting ${q} × cut-out = ${disp} removed from the total.`;
+  } else { $("subNote").textContent = ""; }
+  return tot;
+}
+
 // ---- wiring ----
 function syncShape(){
   const slab = $("shape").value === "slab";
@@ -179,9 +205,14 @@ $("advToggle").addEventListener("click", () => {
 $("useGrade").addEventListener("change", () => { $("gradeBody").hidden = !$("useGrade").checked; $("thicknessField").style.opacity = ($("useGrade").checked?.45:1); compute(); });
 $("useMix").addEventListener("change", () => { $("mixBody").hidden = !$("useMix").checked; compute(); });
 $("useSaw").addEventListener("change", () => { $("sawBody").hidden = !$("useSaw").checked; compute(); });
+$("useSub").addEventListener("change", () => { $("subBody").hidden = !$("useSub").checked; compute(); });
+$("subShape").addEventListener("change", () => {
+  const box = $("subShape").value === "box";
+  $("subBox").hidden = !box; $("subRound").hidden = box; compute();
+});
 
-["length","width","thickness","diameter","height","qty","ca","cb","cc","cd"].forEach(id => $(id).addEventListener("input", compute));
-["lengthU","widthU","thicknessU","diameterU","heightU","waste","bag","strength","cementBag","caU","cbU","ccU","cdU"].forEach(id => $(id).addEventListener("change", compute));
+["length","width","thickness","diameter","height","qty","ca","cb","cc","cd","subL","subW","subD","subDia","subDep","subQty"].forEach(id => $(id).addEventListener("input", compute));
+["lengthU","widthU","thicknessU","diameterU","heightU","waste","bag","strength","cementBag","caU","cbU","ccU","cdU","subLU","subWU","subDU","subDiaU","subDepU"].forEach(id => $(id).addEventListener("change", compute));
 
 // init
 populateUnits();
