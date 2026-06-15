@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://harveyai26032026-ai.github.io/concrete-volume-calculator/sitemap.xml

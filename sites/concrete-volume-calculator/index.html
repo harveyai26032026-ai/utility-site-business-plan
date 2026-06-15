@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concrete Calculator — Estimate Cubic Yards &amp; Bags Instantly</title>
+<meta name="description" content="Free concrete calculator. Instantly estimate the cubic yards, cubic metres and number of bags of concrete you need for slabs, footings, columns and tubes. Fast, mobile-friendly, no sign-up.">
+<link rel="canonical" href="https://harveyai26032026-ai.github.io/concrete-volume-calculator/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Concrete Calculator — Cubic Yards & Bags">
+<meta property="og:description" content="Estimate concrete volume and bags for slabs, footings, columns and tubes. Free and instant.">
+<meta property="og:url" content="https://harveyai26032026-ai.github.io/concrete-volume-calculator/">
+<meta property="og:image" content="https://harveyai26032026-ai.github.io/concrete-volume-calculator/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Concrete Calculator — Cubic Yards & Bags">
+<meta name="twitter:description" content="Estimate concrete volume and bags for slabs, footings, columns and tubes. Free and instant.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Concrete Volume Calculator",
+  "url": "https://harveyai26032026-ai.github.io/concrete-volume-calculator/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "description": "Estimate concrete volume in cubic yards and metres, plus the number of bags needed, for slabs, footings, columns and tubes.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I calculate how much concrete I need?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Multiply the length × width × thickness of your pour to get the volume, then convert to cubic yards (divide cubic feet by 27) or cubic metres. This calculator does it automatically for slabs, footings, round columns and tubes, and also tells you how many pre-mixed bags to buy." }
+    },
+    {
+      "@type": "Question",
+      "name": "How many 80 lb bags of concrete are in a cubic yard?",
+      "acceptedAnswer": { "@type": "Answer", "text": "An 80 lb (36 kg) bag of pre-mixed concrete yields about 0.6 cubic feet, so it takes roughly 45 bags to fill one cubic yard (27 cubic feet). A 60 lb bag yields about 0.45 cubic feet, needing about 60 bags per cubic yard." }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I order extra concrete?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Order 5–10% extra to allow for spillage, uneven sub-base and over-excavation. This calculator includes an optional waste-allowance setting so your estimate already accounts for it." }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="ribbon">
+  <div class="brand">🧱 Concrete Calculator</div>
+  <nav><a href="#how">How it works</a><a href="#faq">FAQ</a></nav>
+</header>
+
+<main>
+  <h1>Concrete Volume Calculator</h1>
+  <p class="lede">Estimate exactly how much concrete you need — in cubic yards, cubic metres, and number of bags — for slabs, footings, round columns and tubes. Free, instant, and works on any device.</p>
+
+  <section class="tool" aria-label="Concrete calculator">
+    <div class="field">
+      <label for="shape">Shape</label>
+      <select id="shape">
+        <option value="slab">Slab / Footing (rectangular)</option>
+        <option value="column">Column / Tube (round)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="units">Units</label>
+      <select id="units">
+        <option value="imperial">Imperial (feet / inches)</option>
+        <option value="metric">Metric (metres / cm)</option>
+      </select>
+    </div>
+
+    <div id="slabInputs">
+      <div class="grid">
+        <div class="field"><label>Length <span class="u" data-u="ft">ft</span></label><input id="length" type="number" min="0" step="any" value="10"></div>
+        <div class="field"><label>Width <span class="u" data-u="ft">ft</span></label><input id="width" type="number" min="0" step="any" value="10"></div>
+        <div class="field"><label>Thickness <span class="u" data-u="in">in</span></label><input id="thickness" type="number" min="0" step="any" value="4"></div>
+      </div>
+    </div>
+
+    <div id="columnInputs" hidden>
+      <div class="grid">
+        <div class="field"><label>Diameter <span class="u" data-u="in">in</span></label><input id="diameter" type="number" min="0" step="any" value="12"></div>
+        <div class="field"><label>Height <span class="u" data-u="ft">ft</span></label><input id="height" type="number" min="0" step="any" value="4"></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="field"><label>Quantity</label><input id="qty" type="number" min="1" step="1" value="1"></div>
+      <div class="field"><label>Waste allowance</label>
+        <select id="waste">
+          <option value="0">0%</option>
+          <option value="5" selected>5%</option>
+          <option value="10">10%</option>
+        </select>
+      </div>
+      <div class="field"><label>Bag size</label>
+        <select id="bag">
+          <option value="0.60">80 lb (0.60 ft³)</option>
+          <option value="0.45">60 lb (0.45 ft³)</option>
+          <option value="0.30">40 lb (0.30 ft³)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="results" id="results" aria-live="polite"></div>
+  </section>
+
+  <section id="how">
+    <h2>What this tool does</h2>
+    <p>This <strong>concrete calculator</strong> tells you how much concrete to order for your project. Enter the dimensions of a rectangular slab or footing, or the diameter and height of a round column or tube, and it instantly returns the volume in <strong>cubic yards and cubic metres</strong>, plus the <strong>number of pre-mixed bags</strong> required at your chosen bag size. It also adds an optional waste allowance so your estimate accounts for spillage and uneven ground. All calculations run locally in your browser — there's nothing to install and no sign-up required.</p>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently asked questions</h2>
+    <h3>How do I calculate how much concrete I need?</h3>
+    <p>Multiply length × width × thickness to get the volume, then convert to cubic yards (cubic feet ÷ 27) or cubic metres. This tool does it automatically for slabs, footings, columns and tubes, and tells you how many bags to buy.</p>
+    <h3>How many 80 lb bags of concrete are in a cubic yard?</h3>
+    <p>An 80 lb bag yields about 0.6 ft³, so roughly 45 bags fill one cubic yard (27 ft³). A 60 lb bag yields about 0.45 ft³, needing about 60 bags per cubic yard.</p>
+    <h3>Should I order extra concrete?</h3>
+    <p>Yes — order 5–10% extra for spillage and uneven sub-base. Use the waste-allowance setting above so your estimate already includes it.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Free &amp; instant concrete estimator. Estimates only — confirm quantities with your supplier before ordering.</p>
+</footer>
+
+<!-- ADSENSE_PLACEHOLDER -->
+<script src="app.js"></script>
+</body>
+</html>
