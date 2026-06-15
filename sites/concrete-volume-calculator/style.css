@@ -33,6 +33,10 @@ input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--acce
 .hint{font-size:.8rem;color:var(--muted);margin:.4em 0 0}
 .grade-wrap{background:var(--soft);border:1px solid var(--ring);border-radius:9px;padding:8px;margin:8px 0}
 h2{margin-top:32px}h3{margin-top:18px;color:var(--accent);font-size:1.02rem}
+table.ref{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92rem}
+table.ref th,table.ref td{border:1px solid var(--ring);padding:8px 10px;text-align:left}
+table.ref th{background:var(--soft);font-weight:700}
+table.ref tr:nth-child(even) td{background:#fafbfd}
 code{background:var(--soft);padding:2px 6px;border-radius:6px;border:1px solid var(--ring);font-size:.92em}
 footer{border-top:1px solid var(--ring);color:var(--muted);text-align:center;padding:20px;font-size:.86rem}
 @media (max-width:520px){

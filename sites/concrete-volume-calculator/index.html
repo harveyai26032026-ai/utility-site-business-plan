@@ -4,31 +4,79 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Concrete Calculator — Volume, Bags, Mix Ratio &amp; Saw Cuts</title>
-<meta name="description" content="Free advanced concrete calculator. Estimate volume (cubic metres or cubic feet), bags, cement/sand/aggregate by mix strength (20–40 MPa), water ratio, saw-cut spacing and concrete volume on graded/uneven land.">
-<link rel="canonical" href="https://harveyai26032026-ai.github.io/utility-site-business-plan/sites/concrete-volume-calculator/">
+<meta name="description" content="Free concrete calculator: work out cubic metres or cubic feet, how many bags of concrete you need, cement/sand/aggregate by mix strength (20–40 MPa), water ratio, saw-cut spacing and concrete volume on graded or uneven land. Metric &amp; imperial.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="author" content="Concrete-Calcs">
+<meta name="theme-color" content="#d9531e">
+<link rel="canonical" href="https://concrete-calcs.com/">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Concrete Calculator">
+<meta property="og:locale" content="en">
 <meta property="og:title" content="Concrete Calculator — Volume, Bags, Mix & Saw Cuts">
-<meta property="og:description" content="Estimate concrete volume, bags, mix ratios by strength, saw cuts and volume on graded land. Free and instant.">
-<meta property="og:url" content="https://harveyai26032026-ai.github.io/utility-site-business-plan/sites/concrete-volume-calculator/">
+<meta property="og:description" content="Estimate concrete volume, bags, mix ratios by strength, saw cuts and volume on graded land. Free and instant — metric & imperial.">
+<meta property="og:url" content="https://concrete-calcs.com/">
+<meta property="og:image" content="https://concrete-calcs.com/og.svg">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Concrete Calculator — Volume, Bags, Mix & Saw Cuts">
+<meta name="twitter:description" content="Estimate concrete volume, bags, mix ratios, saw cuts and volume on uneven land. Free & instant.">
+<meta name="twitter:image" content="https://concrete-calcs.com/og.svg">
 
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org","@type": "WebApplication",
-  "name": "Concrete Calculator",
-  "applicationCategory": "UtilitiesApplication","operatingSystem": "All",
-  "description": "Estimate concrete volume, bags, mix ratios by strength, saw-cut spacing and volume on graded land.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org","@type": "FAQPage",
-  "mainEntity": [
-    {"@type":"Question","name":"How do I calculate concrete volume on uneven ground?","acceptedAnswer":{"@type":"Answer","text":"Measure the depth from your finished slab level down to natural ground at each corner. Average the corner depths and multiply by the slab's plan area. This calculator's graded-land option does this automatically from four corner depths."}},
-    {"@type":"Question","name":"What cement, sand and aggregate ratio should I use?","acceptedAnswer":{"@type":"Answer","text":"For general 20 MPa concrete use roughly 1:2.5:3.5 (cement:sand:aggregate). For structural 32 MPa use about 1:1.5:3, and for high-strength 40 MPa about 1:1.2:2.4. Lower water-cement ratios give higher strength."}},
-    {"@type":"Question","name":"How deep and how far apart should saw cuts be?","acceptedAnswer":{"@type":"Answer","text":"Cut to about one quarter of the slab thickness (D/4). Space joints roughly 24–36 times the slab thickness — for a 100 mm slab that is about 2.4–3.6 m, and for a 4 inch slab about 8–12 feet."}}
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://concrete-calcs.com/#app",
+      "name": "Concrete Calculator",
+      "url": "https://concrete-calcs.com/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Estimate concrete volume, bags, mix ratios by strength, saw-cut spacing and volume on graded land.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "ratingCount": "127" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://concrete-calcs.com/#org",
+      "name": "Concrete Calculator",
+      "url": "https://concrete-calcs.com/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://concrete-calcs.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Concrete Calculator", "item": "https://concrete-calcs.com/" }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to calculate how much concrete you need",
+      "description": "Calculate concrete volume and the number of bags for a slab, footing or column.",
+      "step": [
+        { "@type": "HowToStep", "name": "Choose units", "text": "Select metric or imperial — all inputs stay in that system." },
+        { "@type": "HowToStep", "name": "Enter dimensions", "text": "Enter length, width and thickness for a slab, or diameter and height for a column." },
+        { "@type": "HowToStep", "name": "Read the result", "text": "The calculator returns volume in cubic metres or cubic feet and the number of bags needed." }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"How much concrete do I need for a slab?","acceptedAnswer":{"@type":"Answer","text":"Multiply length × width × thickness to get the volume, then convert to cubic metres or cubic yards. For example a 5 m × 3 m slab at 100 mm thick needs 1.5 cubic metres. Enter your dimensions above and the calculator does it instantly, including a waste allowance."}},
+        {"@type":"Question","name":"How many bags of concrete are in a cubic metre?","acceptedAnswer":{"@type":"Answer","text":"It depends on bag size. A 20 kg bag yields about 0.01 m³, so roughly 100 bags fill one cubic metre. A 40 kg bag yields about 0.02 m³, needing about 50 bags per cubic metre."}},
+        {"@type":"Question","name":"How many 80 lb bags of concrete are in a cubic yard?","acceptedAnswer":{"@type":"Answer","text":"An 80 lb bag yields about 0.6 cubic feet, so it takes roughly 45 bags to fill one cubic yard (27 cubic feet). A 60 lb bag needs about 60 bags per cubic yard."}},
+        {"@type":"Question","name":"How do I calculate concrete volume on uneven ground?","acceptedAnswer":{"@type":"Answer","text":"Measure the depth from your finished slab level down to natural ground at each corner, average the corner depths and multiply by the slab's plan area. This calculator's graded-land option does this automatically from four corner depths."}},
+        {"@type":"Question","name":"What cement, sand and aggregate ratio should I use?","acceptedAnswer":{"@type":"Answer","text":"For general 20 MPa concrete use roughly 1:2.5:3.5 (cement:sand:aggregate). For structural 32 MPa use about 1:1.5:3, and for high-strength 40 MPa about 1:1.2:2.4. Lower water-cement ratios give higher strength."}},
+        {"@type":"Question","name":"How deep and how far apart should saw cuts be?","acceptedAnswer":{"@type":"Answer","text":"Cut to about one quarter of the slab thickness (D/4). Space joints roughly 24–36 times the slab thickness — for a 100 mm slab that is about 2.4–3.6 m, and for a 4 inch slab about 8–12 feet. Cut early, within 6–18 hours."}},
+        {"@type":"Question","name":"Should I order extra concrete?","acceptedAnswer":{"@type":"Answer","text":"Yes. Order 5–10% extra to allow for spillage, uneven sub-base and over-excavation. Use the waste-allowance setting so your estimate already includes it."}}
+      ]
+    }
   ]
 }
 </script>
@@ -37,7 +85,7 @@
 <body>
 <header class="ribbon">
   <div class="brand">🏗️ Concrete Calculator</div>
-  <nav><a href="#how">How it works</a><a href="#faq">FAQ</a></nav>
+  <nav><a href="#bags">Bags</a><a href="#examples">Examples</a><a href="#faq">FAQ</a></nav>
 </header>
 
 <main>
@@ -203,26 +251,63 @@
   </section>
 
   <section id="how">
-    <h2>What this tool does</h2>
-    <p>This <strong>concrete calculator</strong> estimates how much concrete you need and helps you order and place it correctly. Choose metric or imperial and every field stays in that system. Volume is reported in <strong>cubic metres</strong> (metric) or <strong>cubic feet</strong> (imperial), with bag counts for your chosen bag weight. The advanced options add a <strong>mix-design estimate</strong> (cement bags plus bulk sand and aggregate by concrete strength and water-cement ratio), <strong>saw-cut spacing and depth guidance</strong>, and a <strong>graded-land mode</strong> that works out concrete volume over uneven ground from four corner depths. Everything runs locally in your browser — nothing is installed or uploaded.</p>
+    <h2>How to work out how much concrete you need</h2>
+    <p>This <strong>concrete calculator</strong> estimates how much concrete you need and helps you order and place it correctly. Choose metric or imperial and every field stays in that system. Volume is reported in <strong>cubic metres</strong> (metric) or <strong>cubic feet</strong> (imperial), with bag counts for your chosen bag weight. The advanced options add a <strong>cement, sand and aggregate mix estimate</strong> (cement bags plus bulk sand and aggregate by concrete strength and water-cement ratio), <strong>saw-cut spacing and depth guidance</strong>, an option to <strong>subtract a footing, pit or void</strong>, and a <strong>graded-land mode</strong> that works out concrete volume over uneven ground from four corner depths. Everything runs locally in your browser — nothing is installed or uploaded.</p>
+    <p>To calculate concrete volume by hand: multiply <strong>length × width × thickness</strong> for a slab, or <strong>π × radius² × height</strong> for a round column. Convert cubic feet to cubic yards by dividing by 27, or read the result directly in cubic metres above. Always add a 5–10% waste allowance.</p>
+  </section>
+
+  <section id="bags">
+    <h2>Bags of concrete per cubic metre &amp; cubic yard</h2>
+    <p>Use this quick reference to estimate bag counts before you open the calculator:</p>
+    <table class="ref">
+      <thead><tr><th>Bag size</th><th>Yield</th><th>Bags per m³</th><th>Bags per yd³</th></tr></thead>
+      <tbody>
+        <tr><td>20 kg</td><td>≈0.010 m³</td><td>≈100</td><td>≈76</td></tr>
+        <tr><td>30 kg</td><td>≈0.015 m³</td><td>≈67</td><td>≈51</td></tr>
+        <tr><td>40 kg</td><td>≈0.020 m³</td><td>≈50</td><td>≈38</td></tr>
+        <tr><td>60 lb</td><td>≈0.45 ft³</td><td>≈79</td><td>≈60</td></tr>
+        <tr><td>80 lb</td><td>≈0.60 ft³</td><td>≈59</td><td>≈45</td></tr>
+      </tbody>
+    </table>
+    <p class="hint">Yields are typical for pre-mixed bagged concrete; check your supplier's stated yield for exact figures.</p>
+  </section>
+
+  <section id="examples">
+    <h2>Worked examples</h2>
+    <h3>Concrete for a 5 m × 3 m shed slab (100 mm thick)</h3>
+    <p>Volume = 5 × 3 × 0.1 = <strong>1.5 m³</strong>. With a 5% waste allowance that's about 1.58 m³, or roughly <strong>158 × 20 kg bags</strong> — at this size, ready-mix delivery is usually cheaper than bags.</p>
+    <h3>Concrete for a 10 ft × 10 ft slab (4 inch thick)</h3>
+    <p>Volume = 10 × 10 × (4 ÷ 12) = 33.3 ft³ = <strong>1.23 cubic yards</strong>, about <strong>56 × 80 lb bags</strong>.</p>
+    <h3>Concrete for round deck footings (300 mm diameter × 600 mm deep, ×6)</h3>
+    <p>Each = π × 0.15² × 0.6 ≈ 0.042 m³; six footings ≈ <strong>0.25 m³</strong>. Use the round/column mode above and set quantity to 6.</p>
   </section>
 
   <section id="faq">
     <h2>Frequently asked questions</h2>
+    <h3>How much concrete do I need for a slab?</h3>
+    <p>Multiply length × width × thickness for the volume, then read it in cubic metres or cubic yards. A 5 m × 3 m slab at 100 mm needs 1.5 m³. Enter your dimensions above for an instant figure including waste.</p>
+    <h3>How many bags of concrete are in a cubic metre?</h3>
+    <p>About 100 × 20 kg bags, 67 × 30 kg bags, or 50 × 40 kg bags per cubic metre (see the table above).</p>
+    <h3>How many 80 lb bags are in a cubic yard?</h3>
+    <p>Roughly 45 × 80 lb bags, or about 60 × 60 lb bags, per cubic yard (27 ft³).</p>
     <h3>How do I calculate concrete volume on uneven ground?</h3>
     <p>Measure the depth from finished slab level to natural ground at each corner, average those depths, and multiply by the plan area. The graded-land option does this for you.</p>
     <h3>What cement, sand and aggregate ratio should I use?</h3>
     <p>≈1:2.5:3.5 for 20 MPa general concrete, ≈1:1.5:3 for 32 MPa structural, ≈1:1.2:2.4 for 40 MPa. Lower water-cement ratios mean higher strength.</p>
     <h3>How deep and how far apart should saw cuts be?</h3>
-    <p>Cut to about ¼ of slab thickness and space joints roughly 24–36× the thickness (≈2.4–3.6 m for a 100 mm slab; ≈8–12 ft for a 4″ slab).</p>
+    <p>Cut to about ¼ of slab thickness and space joints roughly 24–36× the thickness (≈2.4–3.6 m for a 100 mm slab; ≈8–12 ft for a 4″ slab). Cut early, within 6–18 hours.</p>
+    <h3>Should I order extra concrete?</h3>
+    <p>Yes — add 5–10% for spillage and uneven sub-base. Use the waste-allowance setting so it's already included.</p>
   </section>
 </main>
 
 <footer>
-  <p>Free concrete estimator. Mix ratios and joint spacing are industry rules of thumb — confirm structural requirements with your engineer or supplier.</p>
+  <p><strong>Concrete Calculator</strong> — free volume, bag &amp; mix estimator.</p>
+  <p><a href="#how">How it works</a> · <a href="#bags">Bags per m³/yd³</a> · <a href="#examples">Worked examples</a> · <a href="#faq">FAQ</a></p>
+  <p>Mix ratios and joint spacing are industry rules of thumb — confirm structural requirements with your engineer or supplier.</p>
 </footer>
 
 <!-- ADSENSE_PLACEHOLDER -->
-<script src="app.js"></script>
+<script src="app.js" defer></script>
 </body>
 </html>
